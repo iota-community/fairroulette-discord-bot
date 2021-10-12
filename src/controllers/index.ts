@@ -1,6 +1,11 @@
 import Discord from "discord.js";
 const START_TRIGGER = "-start";
 import WebSocket from "ws";
+import {
+  handleBetPlaced,
+  handleRoundStart,
+  handleWinningNumber,
+} from "./roulette";
 
 const startLogging = async (channel: Discord.TextBasedChannels) => {
   const WS_URI =
@@ -16,12 +21,22 @@ const startLogging = async (channel: Discord.TextBasedChannels) => {
     const msg = data.toString();
     if (msg.startsWith("vmmsg")) {
       const eventType = msg.split("fairroulette.")[1].split(" ")[0];
+
+      switch (eventType) {
+        case "bet.placed":
+          return handleBetPlaced(msg, channel);
+        case "round.number":
+          return handleRoundStart(msg, channel);
+        case "round.winning_number":
+          return handleWinningNumber(msg, channel);
+      }
     }
   });
 };
 
 const HandleMessage = (msg: Discord.Message) => {
   if (msg.content.startsWith(START_TRIGGER)) {
+    msg.channel.send("now listening...");
     startLogging(msg.channel);
   }
 };
