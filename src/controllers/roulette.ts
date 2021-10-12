@@ -1,5 +1,13 @@
 import Discord from "discord.js";
 
+/**
+ * Handle the start of a round and send an embed to the
+ * channnel
+ *
+ * @param {String} msg
+ * @param {Discord.TextBasedChannels} channel
+ */
+
 const handleRoundStart = async (
   msg: string,
   channel: Discord.TextBasedChannels
@@ -11,6 +19,13 @@ const handleRoundStart = async (
     .setDescription(`Round ${args[1]} started`);
   channel.send({ embeds: [embed] });
 };
+
+/**
+ * Handle the event when a bet is placed by a player
+ *
+ * @param {String} msg
+ * @param {Discord.TextBasedChannels} channel
+ */
 
 const handleBetPlaced = async (
   msg: string,
@@ -27,6 +42,13 @@ const handleBetPlaced = async (
     );
   channel.send({ embeds: [embed] });
 };
+
+/**
+ * Handle winning number
+ *
+ * @param {String} msg
+ * @param {Discord.TextBasedChannels} channel
+ */
 
 const handleWinningNumber = async (
   msg: string,

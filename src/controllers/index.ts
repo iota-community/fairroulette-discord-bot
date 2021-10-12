@@ -7,6 +7,13 @@ import {
   handleWinningNumber,
 } from "./roulette";
 
+/**
+ * start logging the events that take place on the websocket and maintain
+ * a stream of messages to the channel the start command was ran on
+ *
+ * @param {Discord.TextBasedChannels} channel
+ */
+
 const startLogging = async (channel: Discord.TextBasedChannels) => {
   const WS_URI =
     "ws://wasp:wasp@193.26.156.200:9090/chain/mGy3Xk5boDS4KfTVtdYfBHevUYqnaYbsTdtH46JfNsFV/ws";
@@ -33,6 +40,13 @@ const startLogging = async (channel: Discord.TextBasedChannels) => {
     }
   });
 };
+
+/**
+ * Handle the message being sent and process it according
+ * to the trigger that is fired
+ *
+ * @param {Discord.Message} msg
+ */
 
 const HandleMessage = (msg: Discord.Message) => {
   if (msg.content.startsWith(START_TRIGGER)) {
