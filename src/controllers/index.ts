@@ -5,6 +5,7 @@ import {
   handleBetPlaced,
   handleRoundStart,
   handleWinningNumber,
+  handlePayout,
 } from "./roulette";
 
 /**
@@ -14,14 +15,14 @@ import {
  * @param {Discord.TextBasedChannels} channel
  */
 
-const startLogging = async (channel: Discord.TextBasedChannels) => {
-  const WS_URI =
-    "ws://wasp:wasp@193.26.156.200:9090/chain/mGy3Xk5boDS4KfTVtdYfBHevUYqnaYbsTdtH46JfNsFV/ws";
-
+const startLogging = async (
+  WS_URI: string,
+  channel: Discord.TextBasedChannels
+) => {
   const ws = new WebSocket(WS_URI);
 
   ws.on("open", () => {
-    console.log("connected");
+    channel.send("now listening...");
   });
 
   ws.on("message", (data) => {
@@ -36,6 +37,8 @@ const startLogging = async (channel: Discord.TextBasedChannels) => {
           return handleRoundStart(msg, channel);
         case "round.winning_number":
           return handleWinningNumber(msg, channel);
+        case "payout":
+          return handlePayout(msg, channel);
       }
     }
   });
@@ -50,8 +53,13 @@ const startLogging = async (channel: Discord.TextBasedChannels) => {
 
 const HandleMessage = (msg: Discord.Message) => {
   if (msg.content.startsWith(START_TRIGGER)) {
-    msg.channel.send("now listening...");
-    startLogging(msg.channel);
+    if (msg.content.split("")[1]) {
+      startLogging(msg.content.split(" ")[1], msg.channel);
+    } else {
+      msg.channel.send(
+        "invalid command please use this command `-start <url>`"
+      );
+    }
   }
 };
 

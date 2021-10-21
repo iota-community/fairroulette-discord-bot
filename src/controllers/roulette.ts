@@ -62,4 +62,23 @@ const handleWinningNumber = async (
   channel.send({ embeds: [embed] });
 };
 
-export { handleWinningNumber, handleBetPlaced, handleRoundStart };
+/**
+ * Handle winner
+ *
+ * @param {String} msg
+ * @param {Discord.TextBasedChannels} channel
+ */
+
+const handlePayout = async (
+  msg: string,
+  channel: Discord.TextBasedChannels
+) => {
+  const args = msg.split("fairroulette.")[1].split(" ");
+  const embed = new Discord.MessageEmbed()
+    .setColor("#b0bfd9")
+    .setTitle("Payout for Winner")
+    .addFields({ name: "Payout", value: args[1] });
+  channel.send({ embeds: [embed] });
+};
+
+export { handleWinningNumber, handleBetPlaced, handleRoundStart, handlePayout };
